@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E4ECEF">
+<title>قعدة عالقمة · رواق</title>
+<meta name="description" content="لعبة فرق ومعلومات: نفس السؤال لعضو من كل فريق، والصح بيطلّعكم درجة عالجبل. مين بيوصل للقمة أول؟">
+<meta property="og:title" content="قعدة عالقمة">
+<meta property="og:description" content="فرق، أسئلة، وجبل. الصح بيطلّع والغلط بينزّل. مين بيرفع العلم عالقمة؟">
+<meta property="og:image" content="/og.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/changa-arabic-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/tajawal-arabic-500-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!--BODY-->
+<div class="demo hide" id="demoTag">جرّب لحالك</div>
+<div class="netbar" id="netbar">عم نرجع نتصل…</div>
+<canvas id="cf"></canvas>
+<div class="app">
+
+<!-- الغلاف -->
+<section class="screen on cover" id="s-cover">
+  <div class="top"><button class="ib" data-theme-t aria-label="الوضع الفاتح أو الداكن"></button><span></span><button class="ib" data-help aria-label="كيف منلعب؟">؟</button></div>
+  <div class="scene" id="scene"></div>
+  <h1 class="title"><small>قعدة</small>عالقمة<span>.</span></h1>
+  <p class="lead">نفس السؤال، لعضو من كل فريق. الصح بيطلّعكم والغلط بينزّلكم.</p>
+  <div class="ticker"><div>من 2 لـ4 فرق، كل لاعب من موبايله<b>▲</b>الجواب الصح درجة لفوق<b>▲</b>الغلط درجة لتحت<b>▲</b>«مرّر» ما بيربّح ولا بيخسّر<b>▲</b>طقس الجبل بيقلب الحسابات<b>▲</b>أول فريق بيوصل للقمة بيرفع علمه</div></div>
+  <div class="acts col">
+    <button class="btn" data-act="host">افتح قعدة</button>
+    <button class="btn ghost" data-act="havecode">عندي كود</button>
+  </div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- كود -->
+<section class="screen" id="s-code">
+  <div class="top"><button class="ib" data-back="cover" aria-label="رجوع"></button><h2>فوت عالقعدة</h2><span class="sp"></span></div>
+  <div class="card col">
+    <div class="mut sm" style="text-align:center">اكتب الكود اللي عند الريس</div>
+    <input class="field codein" id="codeIn" maxlength="5" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="•••••">
+  </div>
+  <div style="margin-top:18px"><button class="btn" id="codeGo" disabled>كمّل</button></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- مين أنت -->
+<section class="screen" id="s-me">
+  <div class="top"><button class="ib" data-back="cover" aria-label="رجوع"></button><h2>قبل ما نطلع</h2><span class="sp"></span></div>
+  <label class="ppick" id="pp" data-crop="me">صورتك<br>(اختياري)</label>
+  <span class="label">اسمك <small>اختياري</small></span>
+  <input class="field" id="nm" maxlength="16" autocomplete="off" placeholder="الاسم">
+  <span class="label">شب ولا صبية؟</span>
+  <div class="seg" id="gen"><button data-g="m">شب</button><button data-g="f">صبية</button></div>
+  <div style="margin-top:24px"><button class="btn" id="meGo" disabled>كمّل</button></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- إعدادات الريس -->
+<section class="screen" id="s-set">
+  <div class="top"><button class="ib" id="setBack" aria-label="رجوع"></button><h2>إعدادات الطلعة</h2><div class="tb2"><button class="ib" data-help aria-label="كيف منلعب؟">؟</button><button class="ib" data-theme-t aria-label="الوضع"></button></div></div>
+  <span class="label">كم فريق؟</span>
+  <div class="seg" id="o-teams"></div>
+  <span class="label">توزيع الفرق</span>
+  <div class="seg" id="o-assign"></div>
+  <span class="label">المجالات <small id="domHint"></small></span>
+  <div class="chips" id="o-doms"></div>
+  <div id="specBox" style="margin-top:10px"></div>
+  <span class="label">الصعوبة</span>
+  <div class="seg" id="o-diff"></div>
+  <span class="label">وقت الجواب</span>
+  <div class="seg" id="o-timer"></div>
+  <span class="label">ارتفاع القمة <small>كم درجة لنوصل</small></span>
+  <div class="seg" id="o-height"></div>
+  <span class="label">إذا وصل أكتر من فريق بنفس الجولة</span>
+  <div class="seg" id="o-tie"></div>
+  <div class="col" style="margin-top:16px">
+    <div class="toggle" id="o-weather"><div>طقس الجبل<small>كل كم جولة بيطلع حدث: ريح طيبة، عاصفة، ضباب، تلفريك</small></div><span class="sw"></span></div>
+    <div class="toggle" id="o-hide"><div>الجبل بالغيم<small>محدا بيعرف وين صار، والكشف كله بالآخر</small></div><span class="sw"></span></div>
+  </div>
+  <span class="label">أسئلة من عندك <small id="custN"></small></span>
+  <button class="btn flat sm" data-act="custom">زيد سؤال</button>
+  <div style="margin-top:22px"><button class="btn" id="setGo">تمام، افتح القعدة</button></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- اللوبي والفرق -->
+<section class="screen" id="s-lobby">
+  <div class="top"><button class="ib" id="lobMenu" aria-label="الإعدادات"></button><h2>شكّلوا الفرق</h2><div class="tb2"><button class="ib" data-help aria-label="كيف منلعب؟">؟</button><button class="ib" data-theme-t aria-label="الوضع"></button></div></div>
+  <div id="permitBox"></div>
+  <div id="lobInfo" class="mut sm" style="margin:14px 0 4px;text-align:center"></div>
+  <div class="teams" id="teams"></div>
+  <div id="looseBox"></div>
+  <div id="lobActs" class="col" style="margin-top:20px"></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- الجولة -->
+<section class="screen" id="s-play">
+  <div class="hud"><span class="rd" id="rdN"></span><div class="mini" id="miniT"></div></div>
+  <div id="tmBox"><div class="row" style="align-items:center;gap:8px"><div class="timer" id="tmBar" style="flex:1"><b></b></div><span class="tnum n" id="tmN"></span></div></div>
+  <div id="wxBox"></div>
+  <div class="sign"><div class="dm" id="qDom"></div><div class="qt" id="qTxt"></div></div>
+  <div class="turn" id="turn"></div>
+  <div class="opts" id="opts"></div>
+  <div id="passBox"></div>
+  <div class="stat" id="stat"></div>
+  <div class="boss hide" id="bossPlay"></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- نتيجة الجولة -->
+<section class="screen" id="s-round">
+  <div class="hud"><span class="rd" id="rrN"></span><span class="mut sm" id="rrWx"></span></div>
+  <div style="margin-top:10px" id="mtnBox"></div>
+  <div class="rr" id="rrRows"></div>
+  <div id="rrActs" class="col" style="margin-top:18px"></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<!-- قبل الكشف -->
+<section class="screen" id="s-wrap">
+  <div class="top"><span class="sp"></span><h2 id="wrapT">وصلنا!</h2><span class="sp"></span></div>
+  <div id="wrapBody"></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+
+<section class="screen party" id="s-party"><div id="pb"></div></section>
+
+<!-- النتيجة -->
+<section class="screen" id="s-res">
+  <div class="top"><button class="ib hide" id="resEdit" aria-label="عدّل القعدة"></button><h2 id="resH"></h2><div class="tb2"><button class="ib" data-help aria-label="كيف منلعب؟">؟</button><button class="ib" data-theme-t aria-label="الوضع"></button></div></div>
+  <div id="winBox"></div>
+  <div style="margin-top:14px" id="resMtn"></div>
+  <div class="seg" style="margin-top:16px" id="rtab"><button class="on" data-t="t">الفرق</button><button data-t="r">كل الجولات</button></div>
+  <div class="tr" style="margin-top:12px" id="resT"></div>
+  <div class="card hide" style="margin-top:12px;padding-block:6px" id="resR"></div>
+
+  <span class="label" style="margin-top:28px">صورة الستوري</span>
+  <div id="storyWho"></div>
+  <div class="seg" id="lay" style="margin-top:8px"><button class="on" data-v="cover">غلاف</button><button data-v="pola">بولاريد</button><button data-v="card">كرت</button></div>
+  <div class="seg" id="ith" style="margin-top:8px"><button data-v="light">فاتح</button><button data-v="dark">داكن</button></div>
+  <div id="tgBox"></div>
+  <div class="story" id="story"></div>
+  <div class="col"><button class="btn" id="dlB">حمّل الصورة</button><a class="btn ghost" href="https://instagram.com/eyad.hloubi" target="_blank" rel="noopener">شارك مع صحابك</a></div>
+  <div class="install" id="install"><b>خلّي اللعبة عموبايلك</b><span id="instTxt">أندرويد: من قائمة المتصفح ⋮ اختار «إضافة إلى الشاشة الرئيسية».<br>آيفون: من Safari اكبس زر المشاركة ثم «إضافة إلى الشاشة الرئيسية».</span><button class="btn sm hide" id="instB" style="margin-top:10px">نزّلها هلق</button></div>
+  <div class="col" style="margin-top:16px" id="resActs"></div>
+  <div class="endsig"><span dir="ltr">@eyad.hloubi</span> · صار بدها قعدة.</div>
+</section>
+
+<!-- انتظار -->
+<section class="screen" id="s-wait">
+  <div class="top"><button class="ib" data-theme-t aria-label="الوضع"></button><span></span><button class="ib" data-help aria-label="كيف منلعب؟">؟</button></div>
+  <div class="wait" id="waitBody"></div>
+  <div class="sig">إعداد م. إياد حلوبي</div>
+</section>
+</div>
+
+<!-- أوراق -->
+<div class="sheet" id="sh-custom"><div class="in">
+  <h3>سؤال من عندك</h3>
+  <div class="mut sm">بيطلع قبل أسئلة الخزينة، لكل الفرق.</div>
+  <span class="label">السؤال</span><textarea class="field" id="cq" maxlength="160" placeholder="مثلاً: شو اسم أول مدرسة فتنا عليها؟"></textarea>
+  <span class="label">الجواب الصح</span><input class="field" id="ca" maxlength="60">
+  <span class="label">3 أجوبة غلط</span>
+  <div class="col"><input class="field" id="cw1" maxlength="60"><input class="field" id="cw2" maxlength="60"><input class="field" id="cw3" maxlength="60"></div>
+  <div class="row" style="margin-top:18px"><button class="btn ghost sm" data-close>إلغاء</button><button class="btn sm" id="cSave">ضيفه</button></div>
+  <div id="custList" style="margin-top:16px"></div>
+</div></div>
+
+<div class="sheet" id="sh-help"><div class="in help">
+  <h3>كيف منلعب؟</h3>
+  <ol>
+    <li><b>الريس</b> بيفتح القعدة وبيختار عدد الفرق والمجالات والصعوبة ووقت الجواب وارتفاع القمة. الباقي بيمسحوا الـQR أو بيكتبوا الكود من موبايلاتهم.</li>
+    <li>كل واحد بيختار فريقه، أو الريس بيفرز عشوائي. أول واحد بيفوت عالفريق هو اللي بيسمّيه.</li>
+    <li>إذا الريس شغّل <b>اختصاصات الفريق</b>: كل مجال بيصير اختصاص، وكل فريق لازم يحجزهن كلهن. إذا الفريق أقل من الاختصاصات في حدا بياخد اتنين (دبل)، وإذا أكتر في اتنين بيتشاركوا وبيتناوبوا.</li>
+    <li>بكل جولة بينطرح <b>نفس السؤال</b> لعضو من كل فريق مع مؤقت. باقي الفريق بيشوف بس ما بيساعد.</li>
+    <li>الصح بيطلّع الفريق <b>درجة</b>، والغلط بينزّله درجة (فيكم توصلوا للوادي تحت الصفر)، و«مرّر» ما بيربّح ولا بيخسّر. إذا خلص الوقت بينحسب تمرير.</li>
+    <li><b>طقس الجبل</b> بيطلع فجأة: ريح طيبة (الصح +2)، عاصفة ثلج (الغلط −2)، ضباب (الوقت النص)، تلفريك (أول صح +1).</li>
+    <li>أول فريق بيوصل للقمة <b>بيرفع علمه</b>. إذا وصلوا سوا: جولة فاصلة للأسرع، أو بيربحوا سوا حسب الإعدادات.</li>
+    <li>بالآخر: حفلة كشف، ترتيب الفرق، ألقاب لكل واحد، وصورة ستوري لكل فريق.</li>
+  </ol>
+  <p class="mut sm">اللعبة مبنية على فكرة مسابقات المعلومات بين الفرق، بروح ألعاب «قعدة رواق». الأسئلة من خزينة فيها 992 سؤال بـ11 مجال و3 مستويات.</p>
+  <p class="sm" style="font-weight:800">إعداد م. إياد حلوبي</p>
+  <button class="btn ghost sm" data-close>فهمت</button>
+</div></div>
+<div class="sheet" id="sh-menu"><div class="in"><h3 id="menuT">أدوات الريس</h3><div class="col" id="menuBody" style="margin-top:12px"></div></div></div>
+
+<div class="crop" id="crop">
+  <div class="frame" id="frame"><img id="cimg" alt=""></div>
+  <input type="range" id="zm" min="0" max="1" step="0.001" value="0" aria-label="تكبير">
+  <div style="font-size:14px;opacity:.85">اسحب وكبّر لتظبط الصورة</div>
+  <div class="row"><button class="btn sm ghost" id="cropNo">إلغاء</button><button class="btn sm" id="cropOk">تمام</button></div>
+</div>
+<input type="file" id="file" accept="image/*" hidden>
+<input type="file" id="cam" accept="image/*" capture="user" hidden>
+<div class="wxover" id="wxo"><div class="c" id="wxoc"></div></div>
+<div class="toast" id="toast"></div>
+<!--/BODY-->
+<script src="vendor/qrcode.js"></script>
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
